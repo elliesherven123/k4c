@@ -430,6 +430,8 @@
     </div>
   </div>
 
+
+
   <!-- Attachment -->
   <div class="card">
     <div class="card-title">Receipt / Attachment</div>
@@ -469,7 +471,7 @@
   const CLIENT_ID  = '781248018042-2d399cvvvpfooa7o2madmoutr9mgb5or.apps.googleusercontent.com';
   const SHEET_ID   = '1qnELPjml1Q8uc1tVgnf0TCsBPnJjO6WiXHjhNyu_AYo';
   const FOLDER_ID  = '1zjKet8DdPVugY1d16Bc76cvZMcT6SUAh';
-  const SHEET_TAB  = 'Expenses by Date';                   // Change if your tab has a different name
+  const SHEET_TAB  = 'Expenses by Date';          // Sheet tab name
   /* ─────────────────────────────────────────── */
 
   const SCOPES = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file';
@@ -686,9 +688,9 @@
     btn.innerHTML = '<span class="spinner"></span>Submitting…';
 
     try {
-      let fileLink = '';
+      // Upload receipt to Drive if provided (link not written to sheet)
       if (selectedFile) {
-        fileLink = await uploadFileToDrive(selectedFile);
+        await uploadFileToDrive(selectedFile);
       }
 
       const timestamp = new Date().toLocaleString('en-US', {
@@ -696,7 +698,7 @@
         hour: '2-digit', minute: '2-digit'
       });
       const submittedBy = userEmail || 'Board Member';
-      const row = [name, date, '$' + parseFloat(amount).toFixed(2), location, category, submittedBy, fileLink, timestamp];
+      const row = [name, date, '$' + parseFloat(amount).toFixed(2), location, category, submittedBy, timestamp];
 
       await appendToSheet(row);
 
